@@ -95,7 +95,7 @@ begin
     Writeln('Ingrese el numero a buscar en el vector: ');
     Readln(num);
     if (busquedaBin(v,num,pri,ult,i) = true) then
-        Writeln(num,'se encuentra en el vector.')
+        Writeln(num,' se encuentra en el vector.')
     else
         Writeln(num,' no se encuentra en el vector');
 end.
