@@ -50,8 +50,8 @@ var
 begin
      new(aux);
      aux^.dato := t;
-     aux^.sig := l;
-     l:= aux;
+     aux^.sig := l_ord;
+     l_ord:= aux;
 end;
 
 
