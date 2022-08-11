@@ -50,7 +50,7 @@ begin
      new(aux);
      aux^.dato := t;
      aux^.sig := l;
-     l:= aux;
+     l:= aux;.
 end;
 
 
