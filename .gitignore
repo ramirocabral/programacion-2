@@ -1,5 +1,7 @@
-*.pptx
 *.exe
+*.sh
+*.ppt
+*.pptx
 *.o
 *.ini
-*.sh
+*.elf
