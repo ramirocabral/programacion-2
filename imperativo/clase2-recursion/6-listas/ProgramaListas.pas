@@ -49,11 +49,6 @@ Begin
         minimoLista := l^.datos;
 End;
 
-Procedure epsonl395 (l:lista);
-
-begin
-
-end;
 
 var
  l: lista;
