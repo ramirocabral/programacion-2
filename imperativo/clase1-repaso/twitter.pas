@@ -1,262 +1,273 @@
-Program twitter;
-Uses
-     sysutils;
-Type
-     tweet = record
-	      codigoUsuario: integer;
-	      nombreUsuario: string;
-	      mensaje: string;
-	      esRetweet: boolean;
-     end;
+program twitter;
 
-     listaTweets = ^nodoLista;
-     nodoLista = record
-               dato: tweet;
-               sig: listaTweets;
-     end;
+Uses 
+sysutils;
+
+Type
+    tweet =   Record
+        codigoUsuario:   integer;
+        nombreUsuario:   string;
+        mensaje:   string;
+        esRetweet:   boolean;
+    End;
+
+    listaTweets =   ^nodoLista;
+    nodoLista =   Record
+        dato:   tweet;
+        sig:   listaTweets;
+    End;
 
      {Completar agregando aquí las estructuras de dato necesarias en el ejercicio}
-     
-     //lista de Usuarios
 
-     usuario = record
-          nombre : string;
-          codigo : integer;
-     end;
+    //lista de Usuarios
 
-     tw = record
-          msj : string;
-          rtw : boolean;
-     end;
+    usuario =   Record
+        nombre :   string;
+        codigo :   integer;
+    End;
+
+    tw =   Record
+        msj :   string;
+        rtw :   boolean;
+    End;
 
 
-     listaTw = ^nodoTw;
-     nodoTw = record
-          dato : tw;
-          sig  : listaTw;
-     end;
+    listaTw =   ^nodoTw;
+    nodoTw =   Record
+        dato :   tw;
+        sig  :   listaTw;
+    End;
 
-     listaUs = ^nodoUs;
-     nodoUs = record
-          dato : usuario;
-          sig : listaUs;
-          tweets : listaTw;
-     end;     
+    listaUs =   ^nodoUs;
+    nodoUs =   record
+        dato :   usuario;
+        sig :   listaUs;
+        tweets :   listaTw;
+    End;
 
 {agregarAdelante - Agrega nro adelante de l_ord}
-Procedure agregarAdelante(var l_ord: listaTweets; t: tweet);
-var
-   aux: listaTweets;
-begin
-     new(aux);
-     aux^.dato := t;
-     aux^.sig := l_ord;
-     l_ord:= aux;
-end;
+Procedure agregarAdelante(Var l_ord: listaTweets; t: tweet);
+
+Var
+    aux:   listaTweets;
+Begin
+    new(aux);
+    aux^.dato := t;
+    aux^.sig := l_ord;
+    l_ord := aux;
+End;
 
 
 
 {crearLista - Genera una lista con tweets aleatorios}
-procedure crearLista(var l_ord: listaTweets);
-var
-   t: tweet;
-   texto: string;
-   v : array [1..10] of string;
-begin
-     v[1]:= 'juan';
-     v[2]:= 'pedro';
-     v[3]:= 'carlos';
-     v[4]:= 'julia';
-     v[5]:= 'mariana';
-     v[6]:= 'gonzalo';
-     v[7]:='alejandro';
-     v[8]:= 'silvana';
-     v[9]:= 'federico';
-     v[10]:= 'ruth';
+Procedure crearLista(Var l_ord: listaTweets);
 
-     t.codigoUsuario := random(11);
-     while (t.codigoUsuario <> 0) do Begin
-          texto:= Concat(v[t.codigoUsuario], '-mensaje-', IntToStr(random (200)));
-          t.nombreUsuario := v[t.codigoUsuario];
-          t.mensaje := texto;
-          t.esRetweet := (random(2)=0);
-          agregarAdelante(l_ord, t);
-          t.codigoUsuario := random(11);
-     end;
-end;
+Var
+    t:   tweet;
+    texto:   string;
+    v :   array [1..10] Of string;
+Begin
+    v[1] := 'juan';
+    v[2] := 'pedro';
+    v[3] := 'carlos';
+    v[4] := 'julia';
+    v[5] := 'mariana';
+    v[6] := 'gonzalo';
+    v[7] := 'alejandro';
+    v[8] := 'silvana';
+    v[9] := 'federico';
+    v[10] := 'ruth';
+
+    t.codigoUsuario := random(11);
+    While (t.codigoUsuario <> 0) Do
+        Begin
+            texto := Concat(v[t.codigoUsuario], '-mensaje-', IntToStr(random (200)));
+            t.nombreUsuario := v[t.codigoUsuario];
+            t.mensaje := texto;
+            t.esRetweet := (random(2)=0);
+            agregarAdelante(l_ord, t);
+            t.codigoUsuario := random(11);
+        End;
+End;
 
 
 {imprimir - Muestra en pantalla el tweet}
-procedure imprimir(t: tweet);
-begin
-     with (t) do begin
-          write('Tweet del usuario @', nombreUsuario, ' con codigo ',codigoUsuario, ': ', mensaje, ' RT:');
-          if(esRetweet)then
-               writeln(' Si')
-          else
-               writeln('No ');
-     end;
-end;
+Procedure imprimir(t: tweet);
+Begin
+    With (t) Do
+        Begin
+            write('Tweet del usuario @', nombreUsuario, ' con codigo ',codigoUsuario, ': ', mensaje, ' RT:');
+            If (esRetweet)Then
+                              writeln(' Si')
+            Else
+                writeln('No ');
+        End;
+End;
 
 
 {imprimirLista - Muestra en pantalla la lista l_ord}
-procedure imprimirLista(l_ord: listaTweets);
-begin
-     while (l_ord <> nil) do begin
-          imprimir(l_ord^.dato);
-          l_ord:= l_ord^.sig;
-     end;
-end;
+Procedure imprimirLista(l_ord: listaTweets);
+Begin
+    While (l_ord <> Nil) Do
+        Begin
+            imprimir(l_ord^.dato);
+            l_ord := l_ord^.sig;
+        End;
+End;
 
 
 {agregarElemento - Resuelve la inserción de la estructura ordenada}
-procedure agregarOrdenado(var pri:listaTweets; t:tweet);
-var
-   nuevo, anterior, actual: listaTweets;
-begin
-     new (nuevo);
-     nuevo^.dato:= t;
-     nuevo^.sig := nil;
-     if (pri = nil) then
-          pri := nuevo
-     else
-     begin
-          actual := pri;
-          anterior := pri;
-          while (actual<>nil) and (actual^.dato.nombreUsuario < nuevo^.dato .nombreUsuario) do begin
-               anterior := actual;
-               actual:= actual^.sig;
-          end;
-          if (anterior = actual) then
-               pri := nuevo
-          else
-               anterior^.sig := nuevo;
-          nuevo^.sig := actual;
-     end;
-end;
+Procedure agregarOrdenado(Var pri:listaTweets; t:tweet);
+
+Var
+    nuevo, anterior, actual:   listaTweets;
+Begin
+    new (nuevo);
+    nuevo^.dato := t;
+    nuevo^.sig := Nil;
+    If (pri = Nil) Then
+                       pri := nuevo
+    Else
+        Begin
+            actual := pri;
+            anterior := pri;
+            While (actual<>Nil) And (actual^.dato.nombreUsuario < nuevo^.dato .nombreUsuario) Do
+                Begin
+                    anterior := actual;
+                    actual := actual^.sig;
+                End;
+            If (anterior = actual) Then
+                                       pri := nuevo
+            Else
+                anterior^.sig := nuevo;
+            nuevo^.sig := actual;
+        End;
+End;
 
 
 {generarNuevaEstructura - Resuelve la generación estructura ordenada}
-procedure generarNuevaEstructura (lT: listaTweets; VAR listaOrdenada: listaTweets);
-begin
-     listaOrdenada := nil;
-     while(lT <> nil) do begin
-          agregarOrdenado(listaOrdenada, lT^.dato);
-          lT := lT^.sig;
-     end;
-end;
+Procedure generarNuevaEstructura (lT: listaTweets; Var listaOrdenada: listaTweets);
+Begin
+    listaOrdenada := Nil;
+    While (lT <> Nil) Do
+        Begin
+            agregarOrdenado(listaOrdenada, lT^.dato);
+            lT := lT^.sig;
+        End;
+End;
 
 {----------------FIN DE SE DISPONE----------------------}
 
 //agregar usuario a la lista principal
 
-procedure agregarDetrasUsuario (var lUs,actNodo:listaUs; data:usuario);
+Procedure agregarDetrasUsuario (Var lUs,actNodo:listaUs; data:usuario);
 
-var nue:listaUs; act:listaUs;
+Var nue:   listaUs;
+    act:   listaUs;
 
-begin
-     new(nue);
-     nue^.dato:=data;
-     nue^.sig:=nil;
-     nue^.tweets:=nil;
-     if (lUs = nil) then
-     begin
-          lUs := nue;
-     end
-     else
-     begin
-          act := lUs;
-          while (act^.sig <> nil) do
-          begin
-               act := act^.sig;
-          end;
-          act^.sig:=nue;
-     end;
-     actNodo:=nue;
-end;
+Begin
+    new(nue);
+    nue^.dato := data;
+    nue^.sig := Nil;
+    nue^.tweets := Nil;
+    If (lUs = Nil) Then
+                       Begin
+                           lUs := nue;
+                       End
+    Else
+        Begin
+            act := lUs;
+            While (act^.sig <> Nil) Do
+                Begin
+                    act := act^.sig;
+                End;
+            act^.sig := nue;
+        End;
+    actNodo := nue;
+End;
 
 //agregar tweets a la lista de cada usuario
 
-procedure agregarDelanteTweet (var lT:listaTw; data:tw);
+Procedure agregarDelanteTweet (Var lT:listaTw; data:tw);
 
-var nue:listaTw;
+Var nue:   listaTw;
 
-begin
-     new(nue);
-     nue^.dato:=data;
-     nue^.sig:=lT;
-     lT:=nue;
-end;
+Begin
+    new(nue);
+    nue^.dato := data;
+    nue^.sig := lT;
+    lT := nue;
+End;
 
 //cargar usuarios y tweets
 
-procedure nuevaLista (l_ord:listaTweets; var lUs:listaUs);
+Procedure nuevaLista (l_ord:listaTweets; Var lUs:listaUs);
 
-var  usAct:string; 
-     usAgregado:usuario;
-     twAgregado:tw;
-     actNodo:listaUs;
-begin
-     actNodo:=nil;
-     while (l_ord <> nil) do
-     begin
-          usAct := l_ord^.dato.nombreUsuario;
-          usAgregado.nombre := usAct;
-          usAgregado.codigo := l_ord^.dato.codigoUsuario;
-          agregarDetrasUsuario(lUs,actNodo,usAgregado);
-          while (l_ord <> nil) and (l_ord^.dato.nombreUsuario = usAct) do
-          begin
-               twAgregado.msj:=l_ord^.dato.mensaje;
-               twAgregado.rtw:=l_ord^.dato.esRetweet;
-               agregarDelanteTweet(actNodo^.tweets,twAgregado);
-               l_ord:=l_ord^.sig;
-          end; 
-     end;
-end;
+Var  usAct:   string;
+    usAgregado:   usuario;
+    twAgregado:   tw;
+    actNodo:   listaUs;
+Begin
+    actNodo := Nil;
+    While (l_ord <> Nil) Do
+        Begin
+            usAct := l_ord^.dato.nombreUsuario;
+            usAgregado.nombre := usAct;
+            usAgregado.codigo := l_ord^.dato.codigoUsuario;
+            agregarDetrasUsuario(lUs,actNodo,usAgregado);
+            While (l_ord <> Nil) And (l_ord^.dato.nombreUsuario = usAct) Do
+                Begin
+                    twAgregado.msj := l_ord^.dato.mensaje;
+                    twAgregado.rtw := l_ord^.dato.esRetweet;
+                    agregarDelanteTweet(actNodo^.tweets,twAgregado);
+                    l_ord := l_ord^.sig;
+                End;
+        End;
+End;
 
-procedure imprimirListas (lUs:listaUs);
+Procedure imprimirListas (lUs:listaUs);
 
-var actTw:listaTw;
+Var actTw:   listaTw;
 
-begin
-     while (lUs <> nil) do
-     begin
-          Writeln('Usuario: ',lUs^.dato.nombre);
-          actTw:=lUs^.tweets;
-          while (actTw <> nil) do
-          begin
-               Write(actTw^.dato.msj,' - ');
-               actTw := actTw^.sig;
-          end;
-          lUs := lUs^.sig;
-          Writeln('');
-     end; 
-end;
+Begin
+    While (lUs <> Nil) Do
+        Begin
+            Writeln('Usuario: ',lUs^.dato.nombre);
+            actTw := lUs^.tweets;
+            While (actTw <> Nil) Do
+                Begin
+                    Write(actTw^.dato.msj,' - ');
+                    actTw := actTw^.sig;
+                End;
+            lUs := lUs^.sig;
+            Writeln('');
+        End;
+End;
 
 
-var
-   l_ord, l_ordenada: listaTweets;
-   lUs : listaUs;
-begin
-     Randomize;
+Var
+    l_ord, l_ordenada:   listaTweets;
+    lUs :   listaUs;
+Begin
+    Randomize;
 
-     l_ord:= nil;
-     crearLista(l_ord);
-     writeln ('Lista generada: ');
-     imprimirLista(l_ord);
+    l_ord := Nil;
+    crearLista(l_ord);
+    writeln ('Lista generada: ');
+    imprimirLista(l_ord);
 
      {Se crea la estructura ordenada}
-     l_ordenada:= nil;
-     generarNuevaEstructura(l_ord,l_ordenada);
-     writeln ('Lista ordenada: ');
-     imprimirLista(l_ordenada);
+    l_ordenada := Nil;
+    generarNuevaEstructura(l_ord,l_ordenada);
+    writeln ('Lista ordenada: ');
+    imprimirLista(l_ordenada);
 
      {Completar el programa}
-     lUs := nil;
-     Writeln('Creando nueva lista: ');
-     nuevaLista(l_ordenada,lUs);
-     Writeln('Imprimiendo nueva lista: ');
-     imprimirListas(lUs);
-     writeln('Fin del programa');
-     readln;
-end.
+    lUs := Nil;
+    Writeln('Creando nueva lista: ');
+    nuevaLista(l_ordenada,lUs);
+    Writeln('Imprimiendo nueva lista: ');
+    imprimirListas(lUs);
+    writeln('Fin del programa');
+    readln;
+End.

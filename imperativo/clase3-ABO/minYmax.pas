@@ -83,7 +83,6 @@ Begin
     end;
 End;
 
-e
 
 procedure generarArbol (var a:arbol; l:Lista);
 
@@ -153,12 +152,45 @@ begin
     end; 
 end;
 
+{-------buscar el minimo o maximo en un arbol ordenado-------}
+
+
+
+function minimoArbol (a:arbol):integer;
+
+begin
+    if (a=nil) then
+        minimoArbol := -1
+    else
+    begin
+        if (a^.HI = nil) then
+            minimoArbol := a^.datos
+        else
+            minimoArbol := minimoArbol(a^.HI);
+    end;
+end;
+
+
+function maximoArbol (a:arbol):integer;
+
+begin
+    if (a=nil) then
+        maximoArbol := -1
+    else
+    begin
+        if (a^.HD = nil) then
+            maximoArbol := a^.datos
+        else
+            maximoArbol := maximoArbol(a^.HD);
+    end;
+end;
+
 
 Var 
     l:   Lista;
     a:   arbol;
     qAct,qSig : cola;
-    level,n:integer;
+    level,n,num:integer;
 Begin
     //generar lista random
 
@@ -189,5 +221,8 @@ Begin
     writeln();
     write('Nivel 1: ');
     imprimirPorNivel(qAct,qSig,level);
-
+    Writeln();
+    //buscar un determinado valor en el arbol
+    Writeln('Minimo valor del arbol: ',minimoArbol(a));
+    Writeln('Maximo valor del arbol: ',maximoArbol(a));
 End.

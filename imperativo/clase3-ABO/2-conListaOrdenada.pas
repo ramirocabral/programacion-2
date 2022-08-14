@@ -1,5 +1,4 @@
-
-Program productos;
+program conListaOrdenada;
 
 Uses 
 sysutils;
@@ -36,14 +35,43 @@ Type
 
 
 
-Procedure AgregarAdelante (var l:lista; num:integer);
+{Procedure AgregarAdelante (var l:lista; num:integer);
 Var nue:lista;
   Begin
     New(nue);
     nue^.datos:=num;
     nue^.sig:=l;
     l:=nue;
-  End;
+  End;}
+
+
+Procedure agregarOrdenado(Var l:lista; num:integer);
+
+Var
+    nuevo, anterior, actual:   lista;
+Begin
+    new (nuevo);
+    nuevo^.datos := num;
+    nuevo^.sig := Nil;
+    If (l = Nil) Then
+        l := nuevo
+    Else
+    Begin
+        actual := l;
+        anterior := l;
+        While (actual<>Nil) And (actual^.datos < nuevo^.datos) Do
+        Begin
+            anterior := actual;
+            actual := actual^.sig;
+        End;
+        If (anterior = actual) Then
+            l := nuevo
+        Else
+            anterior^.sig := nuevo;
+        nuevo^.sig := actual;
+    End;
+End;
+
 
 
 Procedure Imprimir (l:lista);
@@ -83,7 +111,6 @@ Begin
     end;
 End;
 
-e
 
 procedure generarArbol (var a:arbol; l:Lista);
 
@@ -167,7 +194,7 @@ Begin
     n := random (100);
     while (n<>0) do 
     begin
-      AgregarAdelante (l, n);
+      agregarOrdenado(l, n);
       n := random (100);
     end;
     writeln ('lista generada: ');
@@ -191,3 +218,5 @@ Begin
     imprimirPorNivel(qAct,qSig,level);
 
 End.
+
+

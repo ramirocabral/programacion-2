@@ -83,7 +83,6 @@ Begin
     end;
 End;
 
-e
 
 procedure generarArbol (var a:arbol; l:Lista);
 
@@ -153,12 +152,31 @@ begin
     end; 
 end;
 
+{-------buscar un valor determinado en un arbol--------}
+
+function buscar (a:arbol; num:integer):arbol;
+
+begin
+    if (a = nil) then
+        buscar := nil
+    else
+    begin
+        if (num < a^.datos) then
+            buscar := buscar(a^.HI,num)
+        else
+        if (num > a^.datos) then
+            buscar := buscar(a^.HD,num)
+        else
+            buscar := a;
+    end;
+end;
+
 
 Var 
     l:   Lista;
     a:   arbol;
     qAct,qSig : cola;
-    level,n:integer;
+    level,n,num:integer;
 Begin
     //generar lista random
 
@@ -189,5 +207,12 @@ Begin
     writeln();
     write('Nivel 1: ');
     imprimirPorNivel(qAct,qSig,level);
-
+    Writeln();
+    //buscar un determinado valor en el arbol
+    Writeln('Ingrese el valor a buscar en el arbol: ');
+    Readln(num);
+    if (buscar(a,num) = nil) then
+        writeln('El numero no se encuentra en el arbol.')
+    else
+        Writeln(buscar(a,num)^.datos);
 End.
