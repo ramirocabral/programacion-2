@@ -47,10 +47,6 @@ end;
 
 procedure epsonl395 (l:lista);
 
-begin
-
-end;
-
 var
  l: lista;
  n: integer;

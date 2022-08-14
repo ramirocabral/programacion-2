@@ -58,7 +58,9 @@ End;
 {Busqueda Binaria}
 
 
-function busquedaBin(v:vector; num,pri,ult,i:integer):boolean;
+function busquedaBin(v:vector; num,pri,ult:integer):boolean;
+
+var i:integer;
 
 begin
     i:=(pri+ult) div 2;
@@ -69,15 +71,9 @@ begin
         busquedaBin := false
     else
         if (num < v[i]) then
-        begin
-            ult:=i-1;
-            busquedaBin := busquedaBin(v,num,pri,ult,i)
-        end
+            busquedaBin := busquedaBin(v,num,pri,i-1)
         else
-        begin
-            pri:=i+1;
-            busquedaBin := busquedaBin(v,num,pri,ult,i);
-        end;
+            busquedaBin := busquedaBin(v,num,i+1,ult);
 end;        
 
 {PROGRAMA PRINCIPAL}
@@ -94,7 +90,7 @@ begin
     imprimirVector(v, dimL);
     Writeln('Ingrese el numero a buscar en el vector: ');
     Readln(num);
-    if (busquedaBin(v,num,pri,ult,i) = true) then
+    if (busquedaBin(v,num,pri,ult) = true) then
         Writeln(num,' se encuentra en el vector.')
     else
         Writeln(num,' no se encuentra en el vector');
