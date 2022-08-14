@@ -51,13 +51,13 @@ End;
 
 Procedure epsonl395 (l:lista);
 
-Begin
+begin
 
-End;
+end;
 
-Var 
-    l:   lista;
-    n:   integer;
+var
+ l: lista;
+ n: integer;
 
 Begin
     l := Nil;
