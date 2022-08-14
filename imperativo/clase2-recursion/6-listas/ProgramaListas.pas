@@ -1,70 +1,74 @@
+
 Program listas;
-Type
-  lista= ^Nodo;
 
-  Nodo= Record
-           datos: integer;
-           sig: lista;
-        End;
+Type 
+    lista =   ^Nodo;
+
+    Nodo =   Record
+        datos:   integer;
+        sig:   lista;
+    End;
 
 
-Procedure AgregarAdelante (var l:lista; num:integer);
-Var nue:lista;
-  Begin
+Procedure AgregarAdelante (Var l:lista; num:integer);
+
+Var nue:   lista;
+Begin
     New(nue);
-    nue^.datos:=num;
-    nue^.sig:=l;
-    l:=nue;
-  End;
+    nue^.datos := num;
+    nue^.sig := l;
+    l := nue;
+End;
 
 
 Procedure Imprimir (l:lista);
 Begin
-   while (l <> NIL) do begin
-     write (l^.datos, ' ');
-     l:= l^.sig
-  end;
-  writeln;
-end;
+    While (l <> Nil) Do
+        Begin
+            write (l^.datos, ' ');
+            l := l^.sig
+        End;
+    writeln;
+End;
 
 {---------------------Fin de se dispone----------------------}
 
 //Funcion para determinar el elemento minimo de una lista
 
-function minimoLista(l:lista):integer;
+Function minimoLista(l:lista):   integer;
 
-begin
-    if (l^.sig <> nil) then
-    begin
-        if (l^.datos < minimoLista(l^.sig)) then
-            minimoLista := l^.datos
-        else 
-            minimoLista := minimoLista(l^.sig);
-    end
-    else 
+Begin
+    If (l^.sig <> Nil) Then
+        Begin
+            If (l^.datos < minimoLista(l^.sig)) Then
+                minimoLista := l^.datos
+            Else
+                minimoLista := minimoLista(l^.sig);
+        End
+    Else
         minimoLista := l^.datos;
-end;
+End;
 
-procedure epsonl395 (l:lista);
+Procedure epsonl395 (l:lista);
 
-begin
+Begin
 
-end;
+End;
 
-var
- l: lista;
- n: integer;
+Var 
+    l:   lista;
+    n:   integer;
 
-begin
-    l:=nil;
+Begin
+    l := Nil;
     randomize;
     n := random (100);
-    while (n<>0) do 
-    begin
-      AgregarAdelante (l, n);
-      n := random (100);
-    end;
+    While (n<>0) Do
+        Begin
+            AgregarAdelante (l, n);
+            n := random (100);
+        End;
     writeln ('lista generada: ');
     imprimir (l);
     Writeln('Numero minimo de la lista: ',minimoLista(l));
-end.
+End.
