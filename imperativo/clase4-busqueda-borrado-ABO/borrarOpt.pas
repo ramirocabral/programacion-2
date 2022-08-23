@@ -1,4 +1,4 @@
-program busquedaAcotada;
+program pruebaBorrar;
 
 type 
     arbol = ^nodoArbol;
@@ -166,7 +166,6 @@ begin
     end;
 end;
 
-
 procedure borrar(var a:arbol; num:integer; var exito:boolean);
 
 var aux:arbol;
@@ -178,10 +177,10 @@ begin
             borrar(a^.HD,num,exito)
         else if (num < a^.datos) then
             borrar(a^.HI,num,exito)
-        else    {se encontro el datos a borrar}
+        else    {se encontro el dato a borrar}
+        begin
             if (a^.HI = nil) then
             begin
-                writeln('Sin hijo izq');
                 aux:=a;
                 a:=a^.HD;
                 dispose(aux);
@@ -189,7 +188,6 @@ begin
             end
             else if (a^.HD = nil) then
             begin
-                writeln('sin Hijo Derecho');
                 aux:=a;
                 a:=a^.HI;
                 dispose(aux);
@@ -197,20 +195,15 @@ begin
             end
             else if (a^.HD <> nil) and (a^.HI <>  nil) then
             begin
-                writeln('Dos Hijos');
                 a^.datos:=buscarMinimo(a^.HD)^.datos;
                 borrar(a^.HD,a^.datos,exito);
                 exito:=true;
-            end
-            else
-            Begin
-                exito:=true;
             end;
+        end;
     end
-    else    
+    else
         exito := false;
 end;
-
 
 {programa principal}
 
@@ -239,15 +232,23 @@ Begin
     Writeln();
     imprimirPorNivel(a);
 
+
     Writeln('Ingrese el valor a borrar en el arbol:');
     Readln(valor);
-    borrar(a,valor,exito);
-    if (exito = true) then
+    while (valor <> -1) do
     begin
-        Writeln('Arbol borrado: ');
-        imprimirPorNivel(a);
-    end
-    else    
-        Writeln('No se encontro el valor en el arbol');
+        borrar(a,valor,exito);        
+        if (exito = true) then
+        begin
+            Writeln('Arbol borrado: ');
+            imprimirPorNivel(a);
+        end
+        else    
+            Writeln('No se encontro el valor en el arbol');
+        Writeln('Ingrese el valor a borrar en el arbol:');
+        Readln(valor);
+    end;
+
 end.
 
+    
