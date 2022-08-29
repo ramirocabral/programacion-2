@@ -43,6 +43,8 @@ begin
 end;
 
 
+
+
 procedure insertarArbol (var a:arbolCiudades; data:paciente);
 
 begin
@@ -61,7 +63,7 @@ begin
         else if (data.codPostal > a^.codPostal) then
             insertarArbol(a^.HD,data)
         else
-            insertarArbolPacientes(a^.pacientes,data.dni);
+            ;
     end;
 end;
 

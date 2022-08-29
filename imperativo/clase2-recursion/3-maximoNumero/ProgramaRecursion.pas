@@ -15,6 +15,8 @@ begin
     digitoMaximo(n, max);
 end;
 
+
+
 function digitoMax (n:integer):integer;
 
 var dig:integer;
