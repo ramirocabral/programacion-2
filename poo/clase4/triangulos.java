@@ -5,17 +5,6 @@ public class triangulos{
     private String relleno;
     private String linea;
 
-    public triangulos(double lado1, double lado2, double lado3, String relleno, String linea){
-        this.lado1 = lado1;
-        this.lado2 = lado2;
-        this.lado3 = lado3;
-        this.relleno = relleno;
-        this.linea = linea;
-    }
-
-    public triangulo (){
-    }
-
     public void setLado1 (double l){
         lado1 = l;
     }
