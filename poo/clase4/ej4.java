@@ -16,7 +16,7 @@ public class ej4{
             salida = in.next();
             Micro = new micro (patente,destino,salida);
             leerAsientos(Micro);
-            }
+        }
         while ((!(patente.equals("ZZZ000"))) && (!(Flota.flotaCompleta()))){
             Flota.agregarMicro(Micro);
             System.out.println("Ingrese la patente: ");
@@ -71,6 +71,4 @@ public class ej4{
         asiento = in.nextInt()-1;
         }
     }
-
-
-    }
+}
