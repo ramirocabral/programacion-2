@@ -1,0 +1,19 @@
+ORG 1000H
+NUM1 DW 5
+NUM2 DW 3
+
+ORG 2000H 	 
+
+MOV CX, NUM1
+MOV DX, NUM2
+
+MOV BX, 0
+
+
+Mult: ADD BX, CX
+DEC DX
+JNZ Mult
+
+
+HLT 
+END
