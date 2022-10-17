@@ -1,0 +1,30 @@
+ORG 1000H
+
+LETRA DB "f"
+TABLA DB 65,69,73,79,85,97,101,105,111,117
+
+
+ORG 3000h
+
+ES_VOCAL: CMP CH,[BX]
+          JZ FIN
+          INC BX
+          DEC DL
+          JNS ES_VOCAL
+          MOV AL, 00H
+          RET
+          
+FIN:      MOV AL, 0FFH
+          RET
+          
+          
+ORG 2000H
+
+MOV DL, 10
+MOV CH, LETRA
+MOV BX, OFFSET TABLA
+CALL ES_VOCAL
+     
+Fin: HLT
+
+END

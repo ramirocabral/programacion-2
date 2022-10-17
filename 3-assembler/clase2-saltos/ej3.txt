@@ -1,0 +1,15 @@
+ORG 1000H
+
+OP1 DW 50
+OP2 DW 50
+COMP DW 100
+
+       	ORG 2000H
+       	ADD DX, OP1
+       	ADD DX, OP2
+ While: CMP COMP, DX
+       	JZ Fin
+       	DEC DX
+        JMP While
+ Fin:   HLT
+		END

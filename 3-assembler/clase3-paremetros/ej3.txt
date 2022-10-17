@@ -1,0 +1,61 @@
+ORG 1000H
+
+NUM1_L DW 1235H
+NUM1_H DW 5873H
+
+NUM2_L DW 0fab2h
+NUM2_H DW 3245h
+
+RES_L DW 0
+RES_H DW 0
+
+ORG 3000h
+
+SUM32: PUSH DX ; parte HIGH
+
+       MOV DX, 0
+       
+       ADD DX, [BX]
+       
+       POP BX
+       
+       ADD [BX], DX
+       
+       MOV BX, AX; parte LOW
+       
+       MOV AX, 0
+       
+       ADD AX, [BX]
+       
+       MOV BX, CX
+
+       ADD AX,[BX]
+       
+       JC CARRY
+       
+       RET
+
+
+       
+CARRY: INC DX
+
+       RET
+       
+       
+
+ORG 2000H
+
+     MOV AX, OFFSET NUM1_L
+     MOV BX, OFFSET NUM1_H
+ 
+     MOV CX, OFFSET NUM2_L
+     MOV DX, OFFSET NUM2_H
+     
+     CALL SUM32
+     
+     MOV RES_H, DX
+     MOV RES_L, AX
+     
+     HLT
+
+END

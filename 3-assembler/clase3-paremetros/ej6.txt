@@ -1,0 +1,50 @@
+ORG 1000H
+
+PALABRA DB "AGUANTE BOCA"
+FINAL  DB ?
+TABLA DB 65,69,73,79,85,97,101,105,111,117
+
+
+ORG 3000h
+
+ES_VOCAL: CMP CH,[BX]
+          JZ FIN
+          INC BX
+          DEC DL
+          JNS ES_VOCAL
+          MOV AL, 00H
+          RET
+          
+FIN:      MOV AL, 0FFH
+          RET
+          
+VOCALES:  MOV CH, [BX]
+          MOV DL, 10
+          PUSH BX
+          MOV BX, OFFSET TABLA
+          CALL ES_VOCAL
+          POP BX
+          CMP AL, 0FFH
+          JNZ SEGUIR
+          INC AH
+
+SEGUIR:   INC BX
+          DEC DH
+          JNS VOCALES
+          RET
+          
+ORG 2000H
+
+MOV DH, OFFSET FINAL - OFFSET PALABRA
+MOV BX, OFFSET PALABRA
+CALL VOCALES
+
+
+; AH CANTIDAD DE VOCALES
+; AL SI UN CARACTER ES VOCAL O NO
+;DH CANTIDAD DE CARACTERES DE LA STRING
+Fin: HLT
+
+END
+
+

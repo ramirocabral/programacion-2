@@ -1,0 +1,26 @@
+ORG 1000H
+
+NUM1 DB 17
+NUM2 DB 2
+RES DB 0
+
+
+ORG 3000h
+
+RESTO: SUB AL, AH
+       CMP AL,AH
+       JNS RESTO
+       RET
+       
+
+ORG 2000H
+
+    MOV AL, NUM1
+    MOV AH, NUM2
+    CMP AL, AH
+    JS Fin
+    CALL RESTO
+    MOV RES, AL 
+Fin: HLT
+
+END

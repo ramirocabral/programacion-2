@@ -1,0 +1,16 @@
+ORG 1000H
+      
+
+       	ORG 2000H
+       	MOV AL, 1
+       	CMP AL, 4
+       	JZ Then
+       	JMP Else
+  Then: MOV BL, 1 
+        INC CL
+        JMP Fin
+  Else: MOV BL, 2 
+        DEC CL
+  Fin:  HLT
+        
+		END

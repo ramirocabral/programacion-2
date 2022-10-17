@@ -1,0 +1,41 @@
+ORG 1000H
+
+NUM1_L DW 32767
+NUM1_H DW 32767
+
+NUM2_L DW 32767
+NUM2_H DW 32767
+
+RES_L DW 0
+RES_H DW 0
+
+ORG 3000h
+
+SUM32: MOV AX, 0
+       MOV BX,0
+       
+       ADD AX, NUM1_H
+       ADD AX, NUM2_H
+       
+       ADD BX, NUM1_L
+       ADD BX, NUM2_L
+       
+       MOV RES_H, AX
+       
+       MOV RES_L, BX
+       
+       JC CARRY
+       
+       RET
+       
+CARRY: INC RES_H
+       RET
+       
+       
+
+ORG 2000H
+
+      CALL SUM32
+      HLT
+
+END
