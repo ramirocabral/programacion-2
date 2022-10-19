@@ -1,0 +1,27 @@
+ORG 1000H
+
+STRING DB "AGUANTE BOCA%"
+PORC DB "%"
+
+ORG 3000h
+
+CONCAR: MOV DL, 0
+ While: CMP [BX], DH
+        JZ Fin
+        INC DL
+        INC BX
+        JMP While
+ Fin:   RET
+          
+ORG 2000H
+
+MOV BX, OFFSET STRING
+MOV DH, PORC
+
+CALL CONCAR
+
+HLT
+
+END
+
+

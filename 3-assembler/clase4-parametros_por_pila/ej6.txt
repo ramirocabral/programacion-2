@@ -1,0 +1,50 @@
+ORG 1000H 
+
+TABLA DW 3,4,5,6,7,8 ;1000H
+CANT DB 0 ;100CH
+ELEM DB 0 ;100DH
+	
+ORG 3000H
+
+IMPARES: MOV BX, SP
+         ADD BX, 2
+         MOV BX, [BX]
+         MOV BL, [BX]
+         MOV DH, BL
+         MOV BX , SP
+         ADD BX, 4
+         MOV BX, [BX]
+         
+  For:   MOV AX, [BX]
+         CALL ES_IMPAR
+         CMP DL, 00H
+         JNZ Seguir
+         INC CL
+Seguir:  ADD BX, 2
+         SUB DH, 2
+         JNS For
+         RET
+   
+   
+ES_IMPAR: AND AX, 1 
+          CMP AX, 1
+          JZ Par
+          MOV DL, 01H 
+          JMP Fin
+    Par:  MOV DL, 00H
+    Fin:  RET
+
+
+ORG 2000H
+
+MOV ELEM, OFFSET CANT - OFFSET TABLA
+DEC ELEM
+MOV BX, OFFSET TABLA
+MOV CX, OFFSET ELEM
+PUSH BX
+PUSH CX
+MOV CL, 0
+CALL IMPARES
+MOV CANT, CL
+HLT
+END
