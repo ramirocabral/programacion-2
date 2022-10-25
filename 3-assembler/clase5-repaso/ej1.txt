@@ -1,0 +1,47 @@
+ORG 1000H 
+
+
+TABLA DB 3,4,5,6,7
+DIM DB ?
+CANT DB 0; 1006H
+	
+ORG 3000h
+
+rutina: PUSH AX
+        MOV BX, SP
+        ADD BX, 4
+        MOV BX, [BX]
+        MOV AL, [BX]
+        MOV AH, 0
+        CMP AL, 0
+        JZ FIN
+  For:  ADD AH, AL
+        DEC AL
+        JNZ For
+        
+  FIN:  MOV [BX], AH
+        POP AX
+        RET
+
+ORG 2000H
+
+
+MOV DIM ,OFFSET DIM - OFFSET TABLA
+
+DEC DIM
+Loop: MOV BX, OFFSET TABLA
+      ADD BL, DIM
+      MOV DL, [BX]
+      CMP DL, 20
+      JNS SEGUIR
+      INC CANT
+      PUSH BX
+      CALL rutina
+SEGUIR: DEC DIM
+      POP BX
+      JNS Loop
+      
+      POP BX
+     HLT 
+     END
+

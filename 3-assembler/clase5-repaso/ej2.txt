@@ -1,0 +1,49 @@
+ORG 1000H
+
+
+tablaA DB 1,2,5,4,30
+tablaB DB 1,7,5,9,7
+dim DB ?
+cant DB 0
+	
+ORG 3000h
+
+subrutina:PUSH CX
+          MOV CX, BX
+          MOV BL,[BX]
+          MOV AH, 1
+For:      ADD AH,AH
+          ADD AL, 1
+          CMP BL,AL
+          JNZ For
+          MOV BX, CX 
+          MOV [BX], AH
+          POP CX
+          RET
+
+ORG 2000H
+
+MOV dim, OFFSET tablaB - OFFSET tablaA
+MOV BX, OFFSET tablaB
+MOV CX, OFFSET tablaA
+
+LOOP: PUSH BX
+      MOV BX, CX
+      MOV AL, [BX]
+      POP BX
+      MOV DL, [BX]
+      CMP DL, 10
+      JNS cont
+      INC cant
+cont: CMP [BX], AL
+      JS SEGUIR
+      JZ SEGUIR
+      CALL subrutina
+SEGUIR: INC BX
+        INC CX
+        DEC dim
+       JNS LOOP
+       HLT
+       END
+
+
