@@ -1,0 +1,85 @@
+ORG 1000H
+CADENA DB "ManuelRamiro"
+VOCALES DB "AEIOUaeiou"
+CANTVOC DB ?
+
+
+ORG 3000H
+
+SWAP: PUSH CX
+      MOV CH, [BX] ; V2 CH
+      PUSH BX
+      MOV BX, AX
+      MOV CL, [BX] ; V2 CL
+      MOV [BX], CH
+      POP BX
+      MOV [BX], CL
+      POP CX
+      RET
+      
+ES_VOCAL:PUSH AX
+         MOV AL, CL
+         MOV CX, OFFSET VOCALES
+         MOV AL, [BX] ; AL CARACTER A ANALIZAR DE CADENA
+         PUSH BX ; PUSHEAMOS LA DIRECCION QUE TENIAMOS EN BX
+         MOV BX, CX ; BX PRIMERA DIR DE VOCALES
+         MOV CL, 10; 
+         
+COMP:    CMP AL, [BX]
+         JZ SUM ; SI ES VOCAL
+         INC BX
+         DEC CL
+         JNS COMP
+         MOV DH, 00H ; SI NO ES VOCAL
+         JMP FIN1
+         
+SUM:    MOV DH, 0FFH      
+FIN1:   POP BX
+        POP AX
+        RET
+
+
+SUMAR: CMP DH, 0FFH
+       JNZ FIN2
+       INC DL
+FIN2:  RET
+       
+
+;V2 BX
+;V1 AX
+
+ORG 2000H
+
+
+MOV AX, OFFSET CADENA
+MOV BX, OFFSET VOCALES; OBTENEMOS LA DIR FINAL DEL STRING
+DEC BX
+MOV DL,0 ; CUENTA LAS VOCALES
+
+
+Loop: CALL SWAP
+      VOC:  MOV CL, [BX]
+      CALL ES_VOCAL 
+      CALL SUMAR
+      PUSH BX
+      MOV BX,AX
+      MOV CL, [BX]
+      POP BX
+      CALL ES_VOCAL
+      CALL SUMAR
+      INC AX
+      DEC BX
+      CMP BX, AX
+      JNZ SEGUIR
+      MOV CL, [BX]
+      CALL ES_VOCAL
+      CALL SUMAR
+      JMP Fin
+SEGUIR:JS Fin
+      JMP Loop
+      ;COMPARAMOS VOCALES
+
+Fin:  MOV CANTVOC, DL
+      HLT
+
+END
