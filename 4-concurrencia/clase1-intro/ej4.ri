@@ -1,0 +1,83 @@
+programa ej
+procesos
+
+  proceso limpiarFLores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+
+  fin
+
+  proceso limpiarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+
+  proceso recorrerImpar
+  comenzar
+
+    repetir 24
+      limpiarFLores
+      repetir 99
+        mover
+        limpiarFLores
+      Pos(PosAv + 1,1)
+    limpiarFLores
+    repetir 99
+      mover
+      limpiarFLores
+  fin
+
+  proceso recorrerPar
+  comenzar
+
+    repetir 24
+      limpiarPapeles
+      repetir 99
+        mover
+        limpiarPapeles
+      Pos(PosAv + 1,1)
+    limpiarPapeles
+    repetir 99
+      mover
+      limpiarPapeles
+  fin
+
+
+
+areas
+  area1:AreaP(1,1,25,100)
+  area2:AreaP(26,1,50,100)
+  area3:AreaP(51,1,75,100)
+  area4:AreaP(76,1,100,100)
+
+robots
+  robot robot1
+
+  comenzar
+    recorrerImpar
+    Pos(51,1)
+    recorrerImpar
+  fin
+
+  robot robot2
+
+  comenzar
+    recorrerPar
+    Pos(76,1)
+    recorrerPar
+  fin
+
+variables
+  r1:robot1
+  r2:robot2
+
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r1, area3)
+  AsignarArea(r2, area2)
+  AsignarArea(r2, area4)
+  Iniciar(r1, 1, 1)
+  Iniciar(r2, 26, 1)
+fin
