@@ -1,0 +1,82 @@
+programa ej3
+procesos
+
+  proceso procesar(ES cantFlores:numero; ES cantPapeles:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores := cantFlores + 1
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles := cantPapeles + 1
+  fin
+
+
+  proceso hacerEscalon(ES cantFlores:numero; ES cantPapeles:numero)
+  variables
+    y:numero
+
+  comenzar
+  
+    Random(y,1,5)
+    repetir y
+      procesar(cantFlores,cantPapeles)
+      mover
+    derecha
+    mover
+    procesar(cantFlores,cantPapeles)
+    repetir 3
+      derecha
+  fin
+   
+areas
+  area1:AreaP(2,1,6,20)
+  area2:AreaP(7,1,11,20)
+  area3:AreaP(12,1,16,20)
+  area4:AreaP(1,1,1,1)
+
+robots
+  robot robot1
+  variables
+    cantFlores,cantPapeles:numero
+    cant:numero
+
+  comenzar
+    repetir 4
+      hacerEscalon(cantFlores,cantPapeles)
+      si (cantFlores > cantPapeles)
+        cant := cant + 1
+    
+    EnviarMensaje(cant,r4)
+
+  fin
+
+  robot jefe
+
+  variables
+    n1,n2,n3:numero
+
+  comenzar
+    RecibirMensaje(n1,r1)
+    RecibirMensaje(n2,r2)
+    RecibirMensaje(n3,r3)
+    
+    Informar(n1+n2+n3)
+  fin
+
+variables
+  r1:robot1
+  r2:robot1
+  r3:robot1
+  r4:jefe
+
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area2)
+  AsignarArea(r3, area3)
+  AsignarArea(r4, area4)
+  Iniciar(r1, 2, 1)
+  Iniciar(r2, 7, 1)
+  Iniciar(r3, 12, 1)
+  Iniciar(r4, 1, 1)
+fin
