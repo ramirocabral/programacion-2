@@ -1,0 +1,85 @@
+programa ej
+procesos
+  proceso juntarFlores(ES cantFlores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores := cantFlores + 1
+  fin
+
+  proceso juntarPapeles (ES cantPapeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles := cantPapeles + 1
+  fin
+
+areas
+  area1:AreaC(1,1,100,100)
+
+robots
+  robot robot1
+  variables
+    cantFlores:numero
+
+  comenzar
+    BloquearEsquina(1,1)
+    Pos(1,1) 
+    juntarPapeles(cantPapeles)
+    mover
+    LiberarEsquina(1,1)
+    repetir 4
+      BloquearEsquina(PosAv,PosCa)
+      juntarFlores(cantFlores)
+      mover
+      LiberarEsquina(PosAv,PosCa)
+      repetir 99
+        BloquearEsquina(PosAv,PosCa)
+        juntarFlores(cantFlores)
+        mover
+        LiberarEsquina(PosAv,PosCa)
+      derecha
+  fin
+
+  robot robot2
+
+  variables
+    cantPapeles:numero
+
+  comenzar
+    BloquearEsquina(1,1)
+    Pos(1,1)
+    juntarPapeles(cantPapeles)
+    LiberarEsquina(1,1)
+    repetir 2
+      BloquearEsquina(PosAv,PosCa+1)
+      mover
+      juntarPapeles(cantPapeles)
+      LiberarEsquina(PosAv,PosCa)
+      repetir 98
+        BloquearEsquina(PosAv,PosCa+1)
+        juntarPapeles(cantPapeles)
+        mover
+        LiberarEsquina(PosAv,PosCa)
+      derecha
+      BloquearEsquina(PosAv+1,PosCa)
+      mover
+      juntarPapeles(cantPapeles)
+      LiberarEsquina(PosAv,PosCa)
+      repetir 98
+        BloquearEsquina(PosAv+1,PosCa)
+        juntarPapeles(cantPapeles)
+        mover
+        LiberarEsquina(PosAv,PosCa)
+  fin
+
+variables
+  r1:robot1
+  r2:robot2
+
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area1)
+  Iniciar(r1, 49, 50)
+  Iniciar(r2, 50, 49)
+fin

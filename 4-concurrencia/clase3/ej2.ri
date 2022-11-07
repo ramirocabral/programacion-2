@@ -1,0 +1,153 @@
+programa ej
+procesos
+
+  proceso juntarFlores(ES cantFlores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores := cantFlores + 1
+  fin
+
+  proceso juntarPapeles (ES cantPapeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles := cantPapeles + 1
+  fin   
+
+areas
+  area1:AreaC(1,1,5,10)
+  area2:AreaC(6,1,10,9)
+  esq1:AreaP(6,10,6,10)
+  esq2:AreaP(7,10,7,10)
+  esq3:AreaP(8,10,8,10)
+  esq4:AreaP(9,10,9,10)
+  esq10:AreaPC(10,10,10,10)
+
+robots
+  robot robot1
+  variables
+    cantFlores:numero
+    miAv, miCa:numero
+    randAv,randCa:numero
+  comenzar
+    miAv := PosAv
+    miCa := PosCa
+
+    repetir 5
+      Random(randAv,1,5)
+      Random(randCa,1,10)
+      BloquearEsquina(randAv,randCa)
+      Pos(randAv,randCa)
+      juntarFlores(cantFlores)
+      Pos(miAv,miCa)
+      LiberarEsquina(randAv,randCa)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    repetir cantFlores
+      depositarFlor
+    Pos(miAv,miCa)
+    LiberarEsquina(10,10)
+  fin
+
+  robot robot2
+  variables
+    cantFlores:numero
+    miAv, miCa:numero
+    randAv,randCa:numero
+  comenzar
+    miAv := PosAv
+    miCa := PosCa
+
+    repetir 5
+      Random(randAv,1,5)
+      Random(randCa,1,10)
+      BloquearEsquina(randAv,randCa)
+      Pos(randAv,randCa)
+      juntarFlores(cantFlores)
+      Pos(miAv,miCa)
+      LiberarEsquina(randAv,randCa)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    repetir cantFlores
+      depositarFlor
+    Pos(miAv,miCa)
+    LiberarEsquina(10,10)
+  fin
+
+  robot robot3
+  variables
+    cantPapeles:numero
+    miAv, miCa:numero
+    randAv,randCa:numero
+  comenzar
+    miAv := PosAv
+    miCa := PosCa
+
+    repetir 3
+      Random(randAv,6,10)
+      Random(randCa,1,9)
+      BloquearEsquina(randAv,randCa)
+      Pos(randAv,randCa)
+      juntarPapeles(cantPapeles)
+      Pos(miAv,miCa)
+      LiberarEsquina(randAv,randCa)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    repetir cantPapeles
+      depositarPapel
+    Pos(miAv,miCa)
+    LiberarEsquina(10,10)
+  fin
+
+  robot robot4
+  variables
+    cantPapeles:numero
+    miAv, miCa:numero
+    randAv,randCa:numero
+  comenzar
+    miAv := PosAv
+    miCa := PosCa
+
+    repetir 3
+      Random(randAv,6,10)
+      Random(randCa,1,9)
+      BloquearEsquina(randAv,randCa)
+      Pos(randAv,randCa)
+      juntarPapeles(cantPapeles)
+      Pos(miAv,miCa)
+      LiberarEsquina(randAv,randCa)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    repetir cantPapeles
+      depositarPapel
+    Pos(miAv,miCa)
+    LiberarEsquina(10,10)
+  fin
+
+
+
+
+variables
+  r1:robot1
+  r2:robot2
+  r3:robot3
+  r4:robot4
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area1)
+  AsignarArea(r3, area2)
+  AsignarArea(r4, area2)
+  AsignarArea(r1, esq1)
+  AsignarArea(r2, esq2)
+  AsignarArea(r3, esq3)
+  AsignarArea(r4, esq4)
+  AsignarArea(r1, esq10)
+  AsignarArea(r2, esq10)
+  AsignarArea(r3, esq10)
+  AsignarArea(r4, esq10)
+  Iniciar(r1, 6, 10)
+  Iniciar(r2, 7, 10)
+  Iniciar(r3, 8, 10)
+  Iniciar(r4, 9, 10)
+fin

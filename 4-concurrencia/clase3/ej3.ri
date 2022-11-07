@@ -1,0 +1,142 @@
+programa ej
+
+areas
+  area1:AreaPC(2,2,10,10)
+  esq0:AreaP(1,1,1,1)
+  esq1:AreaP(2,1,2,1)
+  esq2:AreaP(3,1,3,1)
+  esq3:AreaP(4,1,4,1)
+  esq4:AreaP(5,1,5,1)
+
+robots
+  robot robot1
+  variables
+    miAv, miCa : numero
+    x , y : numero
+    turno:boolean
+  comenzar
+    miAv := PosAv
+    miCa := PosCa
+
+    RecibirMensaje(x,jefe)
+    RecibirMensaje(y,jefe)
+    RecibirMensaje(turno,jefe)
+    mientras(turno)
+      BloquearEsquina(x,y)
+      Pos(x,y)
+      si (HayFlorEnLaEsquina)
+        tomarFlor
+        EnviarMensaje(V,jefe)
+      sino
+        EnviarMensaje(F,jefe)
+      Pos(miAv,miCa)
+      LiberarEsquina(x,y)
+      RecibirMensaje(turno,jefe)
+
+
+
+  fin
+
+  robot robot5
+
+  variables
+    calle, avenida: numero
+    turno:boolean
+    cant1,cant2,cant3,cant4 : numero
+    max1,max2:numero
+    nombre1:numero
+    nombre2:numero
+
+  comenzar
+    cant1 := 0
+    cant2 := 0
+    cant3 := 0
+    cant4 := 0
+    turno := V
+    max1:=0
+    max2:=0
+
+    Random(avenida,2,10)
+    Random(calle,2,10)
+    EnviarMensaje(avenida,r1)
+    EnviarMensaje(calle,r1)
+    EnviarMensaje(avenida,r2)
+    EnviarMensaje(calle,r2)
+    EnviarMensaje(avenida,r3)
+    EnviarMensaje(calle,r3)
+    EnviarMensaje(avenida,r4)
+    EnviarMensaje(calle,r4)
+
+    mientras(turno)
+      EnviarMensaje(V,r1)
+      RecibirMensaje(turno,r1)
+      si turno
+        cant1 := cant1 + 1
+        EnviarMensaje(V,r2)
+        RecibirMensaje(turno,r2)
+        si turno
+          cant2 := cant2+ 1
+          EnviarMensaje(V,r3)
+          RecibirMensaje(turno,r3)
+          si turno
+            cant3 := cant3+ 1
+            EnviarMensaje(V,r4)
+            RecibirMensaje(turno,r4)
+            si turno
+              cant4 := cant4+ 1
+    EnviarMensaje(F,r1)
+    EnviarMensaje(F,r2)
+    EnviarMensaje(F,r3)
+    EnviarMensaje(F,r4)
+
+    si (cant1 > cant2)
+      max1 := cant1
+      nombre1:=1
+    sino
+      max1:=cant2
+      nombre1:=2
+    
+    si (cant3 > cant4)
+      max2 := cant3
+      nombre2:=3
+    sino
+      nombre2:=4
+      max2 := cant4
+
+    si (max1 > max2)
+      si(nombre1 = 1)
+        Informar(1)
+      sino
+        Informar(2)
+    sino 
+      si (max1 < max2)
+        si (nombre2 = 3)
+          Informar(3)
+        sino
+          Informar(4)
+
+  fin
+
+variables
+  r1:robot1
+  r2:robot1
+  r3:robot1
+  r4:robot1
+  jefe:robot5
+
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area1)
+  AsignarArea(r3, area1)
+  AsignarArea(r4, area1)
+  AsignarArea(r1, esq1)
+  AsignarArea(r2, esq2)
+  AsignarArea(r3, esq3)
+  AsignarArea(r4, esq4)
+  AsignarArea(jefe, esq0)
+  Iniciar(r1, 2, 1)
+  Iniciar(r2, 3, 1)
+  Iniciar(r3, 4, 1)
+  Iniciar(r4, 5, 1)
+  Iniciar(jefe, 1, 1)
+fin
