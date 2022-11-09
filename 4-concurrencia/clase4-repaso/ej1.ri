@@ -1,0 +1,188 @@
+programa ej1
+
+procesos
+
+  proceso recorrerAv
+  comenzar
+    repetir 99
+      mover
+  fin
+
+  proceso maximo(E id: numero; E flores:numero; ES max1:numero; ES max2:numero; ES ganador1:numero; ES ganador2:numero)
+  comenzar
+    si(flores > max1)
+      max2:= max1
+      max1:= flores
+      ganador2:= ganador1
+      ganador1:= id
+    sino 
+      si (flores > max2)
+        max2:= flores
+        ganador2:= id
+  fin
+
+  proceso hacerAvenida(ES cantFlores:numero)
+  comenzar
+    juntarFlores(cantFlores)
+    repetir 99
+      mover
+      juntarFlores(cantFlores)
+  fin
+
+  proceso juntarFlores(ES cantFlores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores := cantFlores + 1
+  fin
+   
+areas
+  area1:AreaC(97,1,100,100)
+  esqJuez:AreaP(1,1,1,1)
+  esq1:AreaP(1,2,1,2)
+  esq2:AreaP(1,3,1,3)
+  esq3:AreaP(1,4,1,4)
+  esq4:AreaP(1,5,1,5)
+  av50:AreaP(50,1,50,100)
+  av60:AreaP(60,1,60,100)
+
+robots
+  robot robot1
+  
+  variables
+    cantFlores:numero
+    id:numero
+    avenida:numero
+    posicion:numero
+    ganador1,ganador2:numero
+    salida:boolean
+    
+  comenzar
+    cantFlores:=0
+    RecibirMensaje(id,jefe)
+    EnviarMensaje(id,jefe)
+    RecibirMensaje(avenida,jefe)
+
+    Pos(avenida,1)
+
+    hacerAvenida(cantFlores)
+
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(cantFlores,jefe)
+
+    RecibirMensaje(ganador1,jefe)
+    RecibirMensaje(ganador2,jefe)
+
+    si (ganador1 = id)
+      Pos(50,1)
+      recorrerAv
+      EnviarMensaje(id,jefe)
+    sino
+      si (ganador2 = id)
+        Pos(60,1)
+        recorrerAv
+        EnviarMensaje(id,jefe)
+  fin
+
+  robot robot2
+
+  variables
+    av:numero
+    id:numero
+    flores:numero
+    max1,max2:numero
+    ganador1,ganador2:numero
+    pos1,pos2:numero
+  comenzar
+    av:=100
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+
+    repetir 4
+      RecibirMensaje(id,*)
+      si (id=1)
+        EnviarMensaje(av,r1)
+      sino
+        si(id=2)
+          EnviarMensaje(av,r2)
+        sino
+          si(id=3)
+            EnviarMensaje(av,r3)
+          sino
+            si(id=4)
+              EnviarMensaje(av,r4)
+      av := av - 1
+
+    max1 := 0
+    max2 := 0
+    ganador1:=0
+    ganador2:=0
+
+    repetir 4
+      RecibirMensaje(id,*)
+      si (id=1)
+        RecibirMensaje(flores,r1)
+      sino
+        si(id=2)
+          RecibirMensaje(flores,r2)
+        sino
+          si(id=3)
+            RecibirMensaje(flores,r3)
+          sino
+            si(id=4)
+              RecibirMensaje(flores,r4)
+
+      maximo(id,flores,max1,max2,ganador1,ganador2)
+
+    EnviarMensaje(ganador1,r1)
+    EnviarMensaje(ganador1,r2)
+    EnviarMensaje(ganador1,r3)
+    EnviarMensaje(ganador1,r4)
+
+    EnviarMensaje(ganador2,r1)
+    EnviarMensaje(ganador2,r2)
+    EnviarMensaje(ganador2,r3)
+    EnviarMensaje(ganador2,r4)
+
+    RecibirMensaje(pos1,*)
+    Informar('Pana',pos1)
+
+    RecibirMensaje(pos2,*)
+
+    Informar('Pana2',pos2)
+
+  fin
+
+variables
+  r1:robot1
+  r2:robot1
+  r3:robot1
+  r4:robot1
+  jefe:robot2
+
+comenzar
+  AsignarArea(r1,esq1)
+  AsignarArea(r2,esq2)
+  AsignarArea(r3,esq3)
+  AsignarArea(r4,esq4)
+  AsignarArea(r1,av50)
+  AsignarArea(r2,av50)
+  AsignarArea(r3,av50)
+  AsignarArea(r4,av50)
+  AsignarArea(r1,av60)
+  AsignarArea(r2,av60)
+  AsignarArea(r3,av60)
+  AsignarArea(r4,av60)
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area1)
+  AsignarArea(r3, area1)
+  AsignarArea(r4, area1)
+  AsignarArea(jefe,esqJuez)
+  Iniciar(jefe, 1, 1)
+  Iniciar(r1, 1, 2)
+  Iniciar(r2, 1, 3)
+  Iniciar(r3, 1, 4)
+  Iniciar(r4, 1, 5)
+fin

@@ -37,7 +37,7 @@ robots
         depositarPapel
         mover
       caActual := PosCa
-    EnviarMensaje(caActual,jefe)  
+    EnviarMensaje(caActual,jefe)
   fin
 
   robot robot2
