@@ -1,0 +1,185 @@
+programa asd
+procesos
+  proceso limpiarEsquina(ES cantPapeles:numero) 
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      cantPapeles := cantPapeles + 1 {Solo nos interesa la cantidad de papeles recolectados, para informarlos al juez}
+  fin
+
+  proceso depositarFlores
+  comenzar
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+
+  proceso juntarFlores(ES cantFlores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:=cantFlores+1
+  fin
+  
+areas
+  areaPrincipal:AreaC(10,10,75,40) {Area donde juntan flores los cosechadores}
+  av1:AreaC(1,1,1,100)  {Avenida 1, para los sembradores}
+  esqSembrador2 : AreaP(99,100,99,100)
+  esqSembrador1 : AreaP(99,99,99,99)
+  esqFlores:AreaPC(100,1,100,1)  {Esquina donde se encuentran las flores recogidas por los cosechadores}
+  esqCosechador1:AreaP(6,8,6,8)
+  esqCosechador2:AreaP(8,8,8,8)
+  esqCosechador3:AreaP(10,8,10,8)
+  esqJuez:AreaP(50,50,50,50)
+
+robots
+  
+  robot tipoSembrador
+
+  variables
+    miAv,miCa:numero
+    calleRandom:numero
+    hayFlor:boolean
+    cantPapeles,ID : numero
+  comenzar 
+    miAv:=PosAv
+    miCa:=PosCa {almacenamos la posicion inicial del robot}
+    cantPapeles := 0
+
+    RecibirMensaje(ID,juez) {Recibimos el mensaje de inicio del juez}
+    
+    BloquearEsquina(100,1)
+    Pos(100,1)
+    mientras (HayFlorEnLaEsquina) {it works!}
+      tomarFlor
+      Random(calleRandom,1,100)
+      BloquearEsquina(1,calleRandom)
+      Pos(1,calleRandom) {Voy a una calle random de la avenida 1}
+      LiberarEsquina(100,1)
+      limpiarEsquina(cantPapeles) {Por algun bug de rinfo el sembrador 2 en algunos casos se traba mientras limpia la esquina, creemos que
+      se procuce ya que el sembrador 1 posee mucha mas velocidad que el 2 y no deja que ambos se ejecuten a la vez}
+      
+      depositarFlor {La esquina queda solo con una flor, la recogida de la esquina 100,1}
+      BloquearEsquina(100,1)
+      Pos(100,1)
+      LiberarEsquina(1,calleRandom)
+
+    Pos(miAv,miCa)   {Cuando ya no hay mas flores en la esquina 100,1}
+    LiberarEsquina(100,1)
+
+    EnviarMensaje(ID,juez)
+    EnviarMensaje(cantPapeles,juez) {Enviamos la cantidad de papeles recolectados}
+      
+  fin
+
+  robot tipoCosechador
+  variables
+    cantFlores:numero
+    miCa:numero
+    miAv:numero
+    avenidaRandom:numero
+    calleRandom:numero
+  comenzar
+    miAv := PosAv
+    miCa := PosCa
+    cantFlores:=0
+    
+    repetir 5 {5 esquinas para cada robot cosechador}
+      Random(avenidaRandom,10,75)
+      Random(calleRandom,10,40)
+      BloquearEsquina(avenidaRandom,calleRandom) {Reservamos la esquina}
+      Pos(avenidaRandom,calleRandom)
+      juntarFlores(cantFlores)
+      Pos(miAv,miCa)
+      LiberarEsquina(avenidaRandom,calleRandom)
+    BloquearEsquina(100,1)
+    Pos(100,1)
+    depositarFlores
+    Pos(miAv,miCa)
+    LiberarEsquina(100,1)
+    EnviarMensaje(cantFlores,juez) {Enviamos la cantidad de flores recolectadas al juez}
+  fin
+
+
+  robot tipoJuez
+  variables
+    totalFlores,cant: numero
+    cant1,cant2:numero
+    ID:numero
+  comenzar
+
+    totalFlores := 0
+
+    {Recibimos la cantidad de flores recolectadas por los 3 cosechadores}
+    repetir 3
+      RecibirMensaje(cant,*)
+      totalFlores:=totalFlores+cant
+    
+    Informar(totalFlores)
+
+    {Informamos a los sembradores que comiencen enviandoles sus IDs}
+
+    EnviarMensaje(1,sembrador1)
+    EnviarMensaje(2,sembrador2)  
+
+    {Recibimos las cantidades de papeles recolectadas por cada robot}
+
+    repetir 2
+      RecibirMensaje(ID,*)
+      si (ID = 1)
+        RecibirMensaje(cant1,sembrador1)
+      sino
+        RecibirMensaje(cant2,sembrador2)
+    
+    si (cant1 < cant2)
+      Informar(1) {Gano el robot 1}
+    sino 
+      si (cant1 > cant2)
+        Informar(2) {Gano el robot2}
+      sino
+        Informar(0){Empate}
+  fin
+
+variables
+
+  cosechador1 : tipoCosechador
+  cosechador2 : tipoCosechador
+  cosechador3 : tipoCosechador 
+  juez : tipoJuez 
+  sembrador1 : tipoSembrador
+  sembrador2 : tipoSembrador
+
+
+
+comenzar
+  AsignarArea(sembrador2,av1)
+  AsignarArea(sembrador2,esqSembrador2)
+  AsignarArea(sembrador2,esqFlores)
+
+  AsignarArea(sembrador1,av1)
+  AsignarArea(sembrador1,esqSembrador1)
+  AsignarArea(sembrador1,esqFlores)
+
+
+  AsignarArea(cosechador1,areaPrincipal)
+  AsignarArea(cosechador2,areaPrincipal)
+  AsignarArea(cosechador3,areaPrincipal)
+  AsignarArea(cosechador1,esqCosechador1)
+  AsignarArea(cosechador2,esqCosechador2)
+  AsignarArea(cosechador3,esqCosechador3)
+  AsignarArea(cosechador1,esqFlores)
+  AsignarArea(cosechador2,esqFlores)
+  AsignarArea(cosechador3,esqFlores)
+  
+  AsignarArea(juez,esqJuez)
+
+  
+  Iniciar(juez,50,50)
+  Iniciar(cosechador1,6,8)
+  Iniciar(cosechador3,10,8)
+  Iniciar(cosechador2,8,8)
+  Iniciar(sembrador1,99,99) 
+  Iniciar(sembrador2,99,100)
+
+fin

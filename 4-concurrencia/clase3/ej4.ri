@@ -55,29 +55,7 @@ robots
     si (calle1 >= calle2)
       max1 := calle1
       nombre1:=1
-    sino
-      max1:=calle2
-      nombre1:=2
-    
-    si (calle3 >= calle4)
-      max2 := calle3
-      nombre2:=3
-    sino
-      nombre2:=4
-      max2 := calle4
-
-    si (max1 >= max2)
-      si(nombre1 = 1)
-        Informar(1)
-      sino
-        Informar(2)
-    sino 
-      si (max1 =< max2)
-        si (nombre2 = 3)
-          Informar(3) 
-        sino
-          Informar(4)
-  fin
+   
 
 variables
   r1:robot1
